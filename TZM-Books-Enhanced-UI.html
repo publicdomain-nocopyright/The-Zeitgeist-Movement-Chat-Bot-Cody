@@ -7,7 +7,7 @@
 	
 <div style="background: #f3f4f6;border-radius: 10px;display: flex;flex-direction: column;height: 100%;align-items: end;">
 <div style="margin: 10px;/* position: absolute; */height: 60px;display: flex;border-bottom: solid #9E9E9E 1px;padding: 8px;z-index: 1;">
-<img src="https://user-images.githubusercontent.com/21064622/226677136-19fd1a34-90e8-49f4-8990-88fff73e60bc.png" style="
+<img src="https://user-images.githubusercontent.com/21064622/226677136-19fd1a34-90e8-49f4-8990-88fff73e60bc.png" style=" animation: zoom-in-zoom-out 1s ease 1;
     width: 60px;
 ">
 
@@ -58,7 +58,21 @@ details {
 details {
 	margin: 0;
 }
+	
+	
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.5, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
 </style>
+	
 <div style="margin-left: 5px;">
 <details>
 	<summary>Show the books used as sources.</summary>
