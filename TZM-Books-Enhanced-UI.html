@@ -9,7 +9,7 @@
 <div style="margin: 10px;/* position: absolute; */height: 60px;display: flex;border-bottom: solid #9E9E9E 1px;padding: 8px;z-index: 1;">
 <img src="https://user-images.githubusercontent.com/21064622/226677136-19fd1a34-90e8-49f4-8990-88fff73e60bc.png" style=" animation: zoom-in-zoom-out 1s ease 1;
     width: 60px;
-"><a href="https://tzm.one/t/the-zeitgeist-movement-chat-bot-cody-ask-questions-about-tzm-books/32213/" style="position: absolute; top: 67px;"><img src="https://tzm.one/uploads/default/original/2X/d/df898c42233350c89b3d451a44b862aa0ec7cac7.svg" style="
+"><a class="one-forum" href="https://tzm.one/t/the-zeitgeist-movement-chat-bot-cody-ask-questions-about-tzm-books/32213/" style="position: absolute; top: 67px;"><img src="https://tzm.one/uploads/default/original/2X/d/df898c42233350c89b3d451a44b862aa0ec7cac7.svg" style="
     height: 20px;
         filter: drop-shadow(16px 5px 3px gray);"></a>
 
@@ -72,6 +72,15 @@ details {
   100% {
     transform: scale(1, 1);
   }
+}
+
+.one-forum > img {
+  transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
+}
+.one-forum > img:hover {
+transform: translateY(-5px);
+
 }
 </style>
 	
