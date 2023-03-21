@@ -75,11 +75,14 @@ details {
 }
 
 .one-forum > img {
-  transform: translateY(0);
-  transition: transform 0.3s ease-in-out;
+ clip-path: inset(0 66% 0 0); /* clip the element in half */
+  transition: clip-path 0.3s ease-in-out; /* add transition effect */
+
 }
 .one-forum > img:hover {
-transform: translateY(-5px);
+clip-path: inset(0 -40% 0 0); /* unhide the other half of the element on hover */
+
+
 
 }
 </style>
