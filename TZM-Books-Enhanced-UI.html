@@ -152,8 +152,16 @@ iframe {
 </style>
 <div style="overflow: hidden; height: 100%; width: 90%; margin-top: -36px; animation: bouncein 1s ease 1;">
 
-<iframe src="https://getcody.ai/widget/bb9030aa-624f-4e8d-9201-45f50ce41fda" style="border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
+<iframe src="https://getcody.ai/widget/bb9030aa-624f-4e8d-9201-45f50ce41fda" style="animation: fadeIn 2.3s; border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
 </div>
+
+<style>
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 100%; }
+}
+</style>
 
 <!--
 <style>
@@ -177,7 +185,7 @@ iframe {
 <style>
 @keyframes bouncein2 {
   0% {
-	position: relative;
+	position: fixed;
     opacity: 0;
     transform: translateX(2000px);
   }
