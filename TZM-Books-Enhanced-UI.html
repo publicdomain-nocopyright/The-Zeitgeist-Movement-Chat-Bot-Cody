@@ -155,10 +155,11 @@ iframe {
 <iframe src="https://getcody.ai/widget/bb9030aa-624f-4e8d-9201-45f50ce41fda" style="border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
 </div>
 
+<!--
 <style>
 @keyframes bouncein {
   0% {
-	position: absolute;
+	position: fixed;
     opacity: 0;
     transform: translateX(2000px);
   }
@@ -167,15 +168,33 @@ iframe {
     transform: translateX(-30px);
   }
   80% { transform: translateX(10px); }
-  100% { 	position: unset; transform: translateX(0); }
+  100% { transform: translateX(0); 	position: fixed; }
 }
 
 </style>
 
 
+<style>
+@keyframes bouncein2 {
+  0% {
+	position: relative;
+    opacity: 0;
+    transform: translateX(2000px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-30px);
+  }
+  80% { transform: translateX(10px); }
+  100% { transform: translateX(0); 	position: fixed; }
+}
+
+</style>
+-->
 
 
-<div style="align-self: normal; color: #4d698e; padding: 9px; background: transparent; text-align: center;">Ask questions about TZM and get answers from the books.</div>
+
+<div style="animation: bouncein2 2s ease 1; align-self: normal; color: #4d698e; padding: 9px; background: transparent; text-align: center;">Ask questions about TZM and get answers from the books.</div>
 
 </div>
 
