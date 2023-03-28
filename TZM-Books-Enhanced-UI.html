@@ -172,9 +172,9 @@ iframe {
 	margin-top: 36px;
 }
 </style>
-<div style="overflow: hidden; height: 100%; width: 90%; margin-top: -36px; animation: bouncein 1s ease 1;">
+<div id="TZM-chat" style="overflow: hidden; height: 100%; width: 90%; margin-top: -36px; animation: bouncein 1s ease 1;">
 
-<iframe src="https://getcody.ai/widget/7039a4d2-235d-432a-95ec-63a2d2488a29" style="animation: shadowDrop 2.3s 2 alternate, fadeIn 2.3s; border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
+<iframe id="cody-iframe" src="https://getcody.ai/widget/7039a4d2-235d-432a-95ec-63a2d2488a29" style="animation: shadowDrop 2.3s 2 alternate, fadeIn 2.3s; border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
 </div>
 
 <style>
@@ -229,7 +229,7 @@ iframe {
 
 
 
-<div style="animation: bouncein2 2s ease 1; align-self: normal; color: #4d698e; padding: 9px; background: transparent; text-align: center;">Ask questions about TZM and get answers from the books.</div>
+<div id="footer" style="animation: bouncein2 2s ease 1; align-self: normal; color: #4d698e; padding: 9px; background: transparent; text-align: center;">Ask questions about TZM and get answers from the books.</div>
 
 </div>
 
@@ -247,3 +247,23 @@ position: absolute;
     left: 0;">
 	<a href="https://getcody.ai/directories/10734/documents" title="Link to Admin Panel: Content.">Content</a>
 </hidden>
+
+
+<script>
+  var isIframeExpanded = false; // initialize the variable in the global scope
+  
+  function changeIframeHeight() {
+    var iframe = document.getElementById("cody-iframe");
+    var footer = document.getElementById("footer");
+    if (isIframeExpanded) {
+      iframe.style.height = "100%";
+      footer.style.paddingTop = "0px"; // set the padding-top of the element with id "footer" to 0px
+      isIframeExpanded = false;
+    } else {
+      iframe.style.height = "127%";
+      footer.style.paddingTop = "20px"; // set the padding-top of the element with id "footer" to 20px
+      isIframeExpanded = true;
+    }
+  }
+</script>
+<button style="position: fixed; top: 0;" onclick="changeIframeHeight()">Capture mode.</button>
