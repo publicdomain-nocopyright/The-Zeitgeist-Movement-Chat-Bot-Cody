@@ -174,7 +174,7 @@ iframe {
 </style>
 <div id="TZM-chat" style="overflow: hidden; height: 100%; width: 90%; margin-top: -36px; animation: bouncein 1s ease 1;">
 
-<iframe id="cody-iframe" src="https://getcody.ai/widget/f50335d6-4b04-41cc-a25d-1b420afafc15" style="animation: shadowDrop 2.3s 2 alternate, fadeIn 2.3s; border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
+<iframe id="iframe" class="iframe" src="https://getcody.ai/widget/f50335d6-4b04-41cc-a25d-1b420afafc15" style="animation: shadowDrop 2.3s 2 alternate, fadeIn 2.3s; border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
 </div>
 
 <style>
@@ -253,7 +253,7 @@ position: absolute;
   var isIframeExpanded = false; // initialize the variable in the global scope
   
   function changeIframeHeight() {
-    var iframe = document.getElementById("cody-iframe");
+    var iframe = document.getElementById("iframe");
     var footer = document.getElementById("footer");
     if (isIframeExpanded) {
       iframe.style.height = "100%";
