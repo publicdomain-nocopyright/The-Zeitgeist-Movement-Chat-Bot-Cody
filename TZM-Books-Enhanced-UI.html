@@ -340,6 +340,13 @@ button {
           // display the screenshot
           i.src = URL.createObjectURL(blob);
         } catch (err) {
+		  
+		  // unsolved, hover opacity stays even when trying to unfocus
+		  // you have to move your pointer out of iframe field for opacity to be applied again.
+		  // One tweak would be: z-index to the iframe and allow cursor to interact with the webpage <body> to apply opacity.
+		  b.disabled = true;   
+		  b.disabled = false;   
+		  
 		  b.style.opacity = "";
 		  b.innerText = 'Take screenshot';
           console.error('Failed to take screenshot:', err);
