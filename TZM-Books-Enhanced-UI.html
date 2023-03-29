@@ -266,9 +266,83 @@ position: absolute;
     }
   }
 </script>
-<button style="opacity: 0%; position: fixed; top: 0;" onclick="changeIframeHeight()">Capture mode.</button>
 <style>
 button:hover {
-	opacity: 100% !important;
+	opacity: 100%;
 }
+
+button {
+	opacity: 0%;
+
+}
+
 </style>
+<hud style="	position: fixed; top: 0;">
+<button style="" onclick="changeIframeHeight()">Capture mode</button>
+
+
+    <div>
+      <video style="opacity: 0; position: fixed; z-index: -9999;" id="v" autoplay></video>
+      <button id="b">Take screenshot</button>
+      <img style="display: none;" id="i" src="//:0" />
+    </div>
+</hud>
+    <script>
+      const v = document.getElementById("v");
+      const b = document.getElementById("b");
+      const i = document.getElementById("i");
+
+      b.onclick = async () => {
+        try {
+		  b.style.opacity = "0"; 
+          b.innerText = 'Waiting for Recording approval';
+
+
+          const stream = await navigator.mediaDevices.getDisplayMedia({
+            audio: false,
+            video: true,
+            preferCurrentTab: true 
+          });
+
+          v.srcObject = stream;
+
+          await new Promise(resolve => {
+            v.addEventListener('loadedmetadata', resolve);
+          });
+		  b.style.opacity = ""; 
+          b.innerText = 'Taking a screenshot';
+          // take screenshot
+          const scale = 1;
+          const canvas = document.createElement("canvas");
+          canvas.width = v.videoWidth * scale;
+          canvas.height = v.videoHeight * scale;
+          canvas.getContext('2d').drawImage(v, 0, 0, canvas.width, canvas.height);
+
+          b.innerText = 'Waiting for clipboard popup';
+
+          const blob = await new Promise((resolve) => {
+            canvas.toBlob(resolve, 'image/png');
+          });
+
+          // write to clipboard
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+          console.log('Screenshot copied to clipboard');
+          b.innerText = 'Screenshot saved to clipboard';
+          b.innerText = 'Take screenshot';		  
+
+          // stop video
+          const tracks = v.srcObject.getTracks();
+          tracks.forEach(track => track.stop());
+          v.srcObject = null;
+
+          // display the screenshot
+          i.src = URL.createObjectURL(blob);
+        } catch (err) {
+		  b.style.opacity = "";
+		  b.innerText = 'Take screenshot';
+          console.error('Failed to take screenshot:', err);
+        }
+      };
+    </script>
