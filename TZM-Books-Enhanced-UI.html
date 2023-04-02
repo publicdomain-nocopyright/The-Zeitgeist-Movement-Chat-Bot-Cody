@@ -172,9 +172,9 @@ iframe {
 	margin-top: 36px;
 }
 </style>
-<div id="TZM-chat" style="overflow: hidden; height: 100%; width: 90%; margin-top: -36px; animation: bouncein 1s ease 1;">
+<div id="TZM-chat" style="z-index: 0;overflow: hidden; height: 100%; width: 90%; margin-top: -36px; animation: bouncein 1s ease 1;">
 
-<iframe id="iframe" class="iframe" src="https://getcody.ai/widget/f50335d6-4b04-41cc-a25d-1b420afafc15" style="animation: shadowDrop 2.3s 2 alternate, fadeIn 2.3s; border:0px;height: 100%;display: block;width: 90%;z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
+<iframe id="iframe" class="iframe" src="https://getcody.ai/widget/f50335d6-4b04-41cc-a25d-1b420afafc15" style="animation: shadowDrop 2.3s 2 alternate, fadeIn 2.3s; border:0px;height: 100%;display: block;width: 90%; z-index: 0;" name="codyai" scrolling="no" frameborder="1" marginheight="0" marginwidth="0" height="“800px”" width="100%" allowfullscreen=""></iframe>
 </div>
 
 <style>
@@ -229,7 +229,39 @@ iframe {
 
 
 
-<div id="footer" style="animation: bouncein2 2s ease 1; align-self: normal; color: #4d698e; padding: 9px; background: transparent; text-align: center;">Ask questions about TZM and get answers from the books.</div>
+<div id="footer" style="z-index: 4; animation: bouncein2 2s ease 1; align-self: normal; color: #4d698e; padding: 9px; background: transparent; text-align: center;">
+
+
+<style>
+
+@keyframes pulse {
+  0% {
+    transform: scale(.85);
+	opacity: 100;
+	background-color: blue !important;
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 50px rgba(#5a99d4, 0);
+	background-color: blue !important;
+
+  }
+    100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(#5a99d4, 0);
+	opacity: 0;
+	background-color: transparent !important;
+
+  }
+}
+</style>
+
+<hud tabindex="0" style="display: block;z-index: 999;  position: fixed; right: 25%; left: 25%;">
+	<button style="" onclick="changeIframeHeight()">Capture mode</button>
+	<button id="b">Take screenshot</button>
+</hud>
+
+Ask questions about TZM and get answers from the books.</div>
 
 </div>
 
@@ -247,6 +279,10 @@ position: absolute;
     left: 0;">
 	<a target="_blank" href="https://getcody.ai/directories/10734/documents" title="Link to Admin Panel: Content.">Content</a>
 </hidden>
+
+<video style="opacity: 0; position: fixed; z-index: -9999;" id="v" autoplay></video>
+<img style="display: none;" id="i" src="//:0" />
+
 
 
 <script>
@@ -266,35 +302,33 @@ position: absolute;
     }
   }
 </script>
+
+
+
 <style>
-button:hover {
+hud:hover > button {
 	opacity: 100%;
 }
 
 button {
+	display: inline-block;
 	opacity: 0%;
+	animation: pulse 1.5s ease-in-out;
 
 }
 
 </style>
-<hud style="	position: fixed; top: 0;">
-<button style="" onclick="changeIframeHeight()">Capture mode</button>
-
-
-    <div>
-      <video style="opacity: 0; position: fixed; z-index: -9999;" id="v" autoplay></video>
-      <button id="b">Take screenshot</button>
-      <img style="display: none;" id="i" src="//:0" />
-    </div>
-</hud>
     <script>
       const v = document.getElementById("v");
       const b = document.getElementById("b");
       const i = document.getElementById("i");
-
+	  const buttons = document.querySelectorAll('button');
       b.onclick = async () => {
         try {
-		  b.style.opacity = "0"; 
+		
+		  buttons.forEach(button => {
+		    button.style.opacity = 0;
+		  });
           b.innerText = 'Waiting for Recording approval';
 
 
@@ -309,7 +343,10 @@ button {
           await new Promise(resolve => {
             v.addEventListener('loadedmetadata', resolve);
           });
-		  b.style.opacity = ""; 
+		  
+		  buttons.forEach(button => {
+		    button.style.opacity = "";
+		  });
           b.innerText = 'Taking a screenshot';
           // take screenshot
           const scale = 1;
@@ -347,7 +384,9 @@ button {
 		  b.disabled = true;   
 		  b.disabled = false;   
 		  
-		  b.style.opacity = "";
+		  buttons.forEach(button => {
+		    button.style.opacity = "";
+		  });
 		  b.innerText = 'Take screenshot';
           console.error('Failed to take screenshot:', err);
         }
