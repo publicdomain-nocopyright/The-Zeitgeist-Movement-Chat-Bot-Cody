@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GET Request Example</title>
+  <style>
+    #message-data div {
+      margin-bottom: 10px;
+    }
+    #message-data div strong {
+      font-weight: bold;
+    }
+    #tzm-response {
+      border: 2px solid black;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <ul id="data-list"></ul>
+  <div id="message-data">
+    <div id="tzm-response">
+      <div><strong>Content: </strong>Loading introduction...</div>
+    </div>
+  </div>
+  <div id="loading-text" style="display: none;">Loading...</div>
+
+  <div id="message-box" style="display: none;">
+    <input type="text" id="message-input" placeholder="Enter your message">
+    <button onclick="sendMessage()">Send Message</button>
+  </div>
+
+  <div id="conversation-info" style="display: none;">Conversation created!</div>
+
+  <script>
+    let selectedBotId = null;
+    let selectedConversationId = null;
+    const loadingText = document.getElementById("loading-text");
+    const messageBox = document.getElementById("message-box");
+    const conversationInfo = document.getElementById("conversation-info");
+    let isTZMQuestionAnswered = false;
+
+    const sendFetchRequest = async (url, method, data = null) => {
+      try {
+        loadingText.style.display = "block";
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            "Authorization": "Bearer cFGSh0g5NY3FRVtGBP6N7MFrMkqMQwPQrUPiy9Sd",
+            "Content-Type": "application/json"
+          },
+          body: data ? JSON.stringify(data) : null
+        });
+        const responseData = await response.json();
+        loadingText.style.display = "none";
+        return responseData;
+      } catch (error) {
+        console.error("Request failed:", error);
+        throw error;
+      }
+    }
+
+    const handleItemClick = function() {
+      selectedBotId = this.dataset.botId;
+      if (selectedBotId) {
+        createConversation(selectedBotId);
+      } else {
+        console.error("No bot selected.");
+      }
+    }
+
+    const createConversation = (botId) => {
+      const conversationData = { name: "firstconversation68", bot_id: botId };
+      sendFetchRequest("https://getcody.ai/api/v1/conversations", "POST", conversationData)
+        .then(data => {
+          console.log("Conversation created:", data);
+          selectedConversationId = data.data.id; 
+          conversationInfo.style.display = "block"; // Show the conversation info
+          messageBox.style.display = "block"; // Show the message box
+          getMessages(selectedConversationId);
+        })
+        .catch(error => console.error("Error creating conversation:", error));
+    }
+
+    const getMessages = async (conversationId) => {
+      const requestData = { content: "What is TZM?", conversation_id: conversationId };
+      setLoadingText("Loading answer..."); // Set custom loading text for this action
+      try {
+        const response = await sendFetchRequest("https://getcody.ai/api/v1/messages", "POST", requestData);
+        console.log("Messages:", response);
+
+        const messageData = document.getElementById("message-data");
+        const tzmResponse = document.getElementById("tzm-response");
+
+        if (!isTZMQuestionAnswered && response.data.content) {
+          // If the response is to the question "What is TZM?", display it in the reserved space
+          tzmResponse.innerHTML = `<div><strong>Content: </strong>${response.data.content}</div>`;
+          isTZMQuestionAnswered = true;
+        }
+
+        if (response.data.next_message_id) {
+          await getMessages(response.data.next_message_id);
+        } else {
+          setLoadingText("Loading..."); // Set back to default loading text
+        }
+      } catch (error) {
+        console.error("Error getting messages:", error);
+      }
+    }
+
+    const createList = (data, property, clickHandler) => {
+      let dataList = document.getElementById("data-list");
+      dataList.innerHTML = "";
+      let defaultBotSelected = false;
+      data.forEach(item => {
+        let li = document.createElement("li");
+        li.textContent = item[property];
+        li.dataset.botId = item.id; 
+        li.addEventListener("click", clickHandler); 
+        if (item[property] === "TZM Books Enhanced, Researching Bot" && !defaultBotSelected) {
+          defaultBotSelected = true;
+          li.click(); // Trigger click for default bot selection
+        }
+        dataList.appendChild(li);
+      });
+    }
+    
+    const sendMessage = () => {
+      const messageInput = document.getElementById("message-input");
+      const message = messageInput.value;
+      if (selectedConversationId && message) {
+        const requestData = { content: message, conversation_id: selectedConversationId };
+        setLoadingText("<strong>Sending and answering message:</strong> " + message); // Set custom loading text for this action
+
+        const messageData = document.getElementById("message-data");
+        const tzmResponse = document.getElementById("tzm-response");
+
+        if (message === "What is TZM?" && !isTZMQuestionAnswered) {
+          // If the message is the question "What is TZM?" and it hasn't been answered yet,
+          // display the loading message in the reserved space
+          tzmResponse.innerHTML = "<div><strong>Content: </strong>Loading introduction...</div>";
+          isTZMQuestionAnswered = true;
+        } else {
+          // For other messages, append them as usual at the bottom of the chat
+          const newContent = document.createElement("div");
+          const label = document.createElement("strong");
+          label.textContent = "Content: ";
+          newContent.appendChild(label);
+          newContent.appendChild(document.createTextNode(message));
+          messageData.appendChild(newContent);
+        }
+
+        sendFetchRequest("https://getcody.ai/api/v1/messages", "POST", requestData)
+          .then(data => {
+            console.log("Message sent:", data);
+            const newContent = document.createElement("div");
+            const label = document.createElement("strong");
+            label.textContent = "Content: ";
+            newContent.appendChild(label);
+            newContent.appendChild(document.createTextNode(data.data.content));
+            messageData.appendChild(newContent);
+            setLoadingText("Loading..."); // Set back to default loading text
+          })
+          .catch(error => console.error("Error sending message:", error));
+        messageInput.value = ""; // Clear the message input
+      } else {
+        console.error("No conversation selected or empty message.");
+      }
+    }
+
+    const setLoadingText = (text) => {
+      loadingText.innerHTML = text;
+    }
+
+    // Load the bot list on page load
+    getBots();
+
+    // Fetch the bots from the API and populate the list
+    function getBots() {
+      sendFetchRequest("https://getcody.ai/api/v1/bots", "GET")
+        .then(data => createList(data.data, "name", handleItemClick))
+        .catch(error => console.error("Error fetching bots:", error));
+    }
+
+    // Event listener for Enter key press in the input box
+    const messageInput = document.getElementById("message-input");
+    messageInput.addEventListener("keyup", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        sendMessage();
+        messageInput.value = ""; // Clear the message input
+      }
+    });
+  </script>
+</body>
+</html>
